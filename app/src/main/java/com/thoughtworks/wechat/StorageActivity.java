@@ -9,7 +9,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Pair;
 import android.widget.Toast;
 
-import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
@@ -19,7 +18,6 @@ import com.thoughtworks.wechat.model.User;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.ButterKnife;
@@ -38,14 +36,13 @@ public class StorageActivity extends AppCompatActivity {
     @OnClick(R.id.write_pref)
     void writePrefsandFiles(){
         writeData();
-
+        Toast.makeText(StorageActivity.this, "successfully", Toast.LENGTH_SHORT).show();
     }
 
     private void writeData() {
         new AsyncTask<Void, Void, Pair<User, List<Tweet>>>() {
             @Override
             protected Pair<User, List<Tweet>> doInBackground(Void... params) {
-                List<Tweet> tweetList = new ArrayList<>();
                 User user = null;
                 try {
                     String url_tweet = "http://thoughtworks-ios.herokuapp.com/user/jsmith/tweets";
@@ -56,11 +53,10 @@ public class StorageActivity extends AppCompatActivity {
                     Response response_tweet = okHttpClient.newCall(request_tweet).execute();
                     Response response_user = okHttpClient.newCall(request_user).execute();
                     if (response_tweet.isSuccessful() && response_user.isSuccessful()) {
-                        tweetList = new Gson().fromJson(response_tweet.body().string(), new TypeToken<List<Tweet>>() {
-                        }.getType());
-                        writeFile(response_tweet.body().string());
                         user = new Gson().fromJson(response_user.body().string(), User.class);
                         writeuser(user);
+                        writeFile(response_tweet.body().string());
+
                     }
                 }catch (IOException e) {
                     e.printStackTrace();
@@ -82,7 +78,6 @@ public class StorageActivity extends AppCompatActivity {
     }
 
     private void writeFile(String tweetList){
-        System.out.println("&&&&&&&&&&&&&&&&&&&&&&&&&&");
         FileOutputStream outputStream;
         try {
             outputStream = openFileOutput("HomeWork", Context.MODE_PRIVATE);
@@ -91,8 +86,6 @@ public class StorageActivity extends AppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        Toast.makeText(StorageActivity.this, "successfully", Toast.LENGTH_SHORT).show();
     }
 
 }

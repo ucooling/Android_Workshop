@@ -27,4 +27,10 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, StorageActivity.class);
         startActivity(intent);
     }
+
+    @OnClick(R.id.servce_btn)
+    void ServiceActivity() {
+        Intent intent = new Intent(this, ServiceActivity.class);
+        startActivity(intent);
+    }
 }

@@ -9,6 +9,7 @@ import com.thoughtworks.wechat.database.DataBaseContract;
 import com.thoughtworks.wechat.model.Image;
 import com.thoughtworks.wechat.model.Sender;
 import com.thoughtworks.wechat.model.Tweet;
+import com.thoughtworks.wechat.model.User;
 
 import java.util.List;
 
@@ -27,6 +28,15 @@ public class DatabaseUtils {
         return contentValues;
     }
 
+    public static ContentValues getWeChatUserContentValues(User user) {
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(DataBaseContract.UserEntry.COLUMN_USER_NAME, user.getUsername());
+        contentValues.put(DataBaseContract.UserEntry.COLUMN_NICK, user.getNick());
+        contentValues.put(DataBaseContract.UserEntry.COLUMN_AVATAR, user.getAvatar());
+        contentValues.put(DataBaseContract.UserEntry.COLUMN_PROFILE_IMAGE, user.getProfileImage());
+        return contentValues;
+    }
+
     public static Tweet cursor2Tweet(Cursor cursor) {
         Tweet tweet = new Tweet();
         tweet.setContent(cursor.getString(cursor.getColumnIndex(DataBaseContract.TweetEntry.COLUMN_NAME_CONTENT)));
@@ -41,5 +51,14 @@ public class DatabaseUtils {
         tweet.setError(cursor.getString(cursor.getColumnIndex(DataBaseContract.TweetEntry.COLUMN_NAME_ERROR)));
         tweet.setUnknownError(cursor.getString(cursor.getColumnIndex(DataBaseContract.TweetEntry.COLUMN_NAME_UNKNOW_ERROR)));
         return tweet;
+    }
+
+    public static User cursorUser(Cursor cursor){
+        User user = new User();
+        user.setUsername(cursor.getString(cursor.getColumnIndex(DataBaseContract.UserEntry.COLUMN_USER_NAME)));
+        user.setNick(cursor.getString(cursor.getColumnIndex(DataBaseContract.UserEntry.COLUMN_NICK)));
+        user.setAvatar(cursor.getString(cursor.getColumnIndex(DataBaseContract.UserEntry.COLUMN_AVATAR)));
+        user.setProfileImage(cursor.getString(cursor.getColumnIndex(DataBaseContract.UserEntry.COLUMN_PROFILE_IMAGE)));
+        return user;
     }
 }

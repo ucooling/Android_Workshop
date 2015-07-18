@@ -6,6 +6,8 @@
     <string name="title_activity_second">SecondActivity</string>
     <string name="title_activity_storage">StorageActivity</string>
     <string name="storage">Storage Homework</string>
+    <string name="service">Service Activity</string>
 
     <string name="btn_write_pref">Write</string>
+    <string name="title_activity_service">ServiceActivity</string>
 </resources>

@@ -22,4 +22,11 @@
         android:layout_marginTop="50dp"
         android:text="@string/storage" />
 
+    <Button
+        android:id="@+id/servce_btn"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="100dp"
+        android:text="@string/service" />
+
 </RelativeLayout>

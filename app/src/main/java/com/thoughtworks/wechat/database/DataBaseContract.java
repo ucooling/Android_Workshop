@@ -18,6 +18,14 @@ public class DataBaseContract {
         String COLUMN_NAME_COMMENTS = "comments";
         String COLUMN_NAME_ERROR = "error";
         String COLUMN_NAME_UNKNOW_ERROR = "unknow_error";
-
     }
+
+    public interface UserEntry extends BaseColumns {
+        String TABLE_NAME = "User";
+        String COLUMN_USER_NAME = "username";
+        String COLUMN_NICK = "nick";
+        String COLUMN_AVATAR = "avatar";
+        String COLUMN_PROFILE_IMAGE = "profile_image";
+    }
+
 }

@@ -26,6 +26,24 @@
             android:name=".StorageActivity"
             android:label="@string/title_activity_storage" >
         </activity>
+
+        <service
+            android:name=".service.TweetService"
+            android:enabled="true"
+            android:exported="true" >
+        </service>
+
+        <receiver android:name=".WechatServiceBroadcast">
+            <intent-filter>
+                <action android:name="com.thoughtworks.wechat.service.WECHAT" />
+                <category android:name="android.intent.category.DEFAULT"></category>
+            </intent-filter>
+        </receiver>
+
+        <activity
+            android:name=".ServiceActivity"
+            android:label="@string/title_activity_service" >
+        </activity>
     </application>
 
 </manifest>

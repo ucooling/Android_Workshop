@@ -7,6 +7,5 @@
     <string name="title_activity_storage">StorageActivity</string>
     <string name="storage">Storage Homework</string>
 
-    <string name="btn_write_pref">Write Pref</string>
-    <string name="btn_write_file">Write File</string>
+    <string name="btn_write_pref">Write</string>
 </resources>

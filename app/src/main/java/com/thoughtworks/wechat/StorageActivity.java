@@ -33,7 +33,7 @@ public class StorageActivity extends AppCompatActivity {
         ButterKnife.inject(this);
     }
 
-    @OnClick(R.id.write_pref)
+    @OnClick(R.id.write_pref_and_file)
     void writePrefsandFiles(){
         writeData();
         Toast.makeText(StorageActivity.this, "successfully", Toast.LENGTH_SHORT).show();

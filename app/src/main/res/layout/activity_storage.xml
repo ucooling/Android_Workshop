@@ -7,18 +7,11 @@
     tools:context="com.thoughtworks.wechat.StorageActivity">
 
     <Button
-        android:id="@+id/write_pref"
+        android:id="@+id/write_pref_and_file"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="@string/btn_write_pref"
         />
 
-    <Button
-        android:id="@+id/write_file"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="60dp"
-        android:text="@string/btn_write_file"
-        />
 
 </RelativeLayout>

@@ -4,8 +4,7 @@ import android.app.IntentService;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
-import android.os.IBinder;
-import android.util.Log;
+import android.support.v4.content.LocalBroadcastManager;
 
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
@@ -17,14 +16,19 @@ import com.thoughtworks.wechat.utils.DatabaseUtils;
 import com.thoughtworks.wechat.utils.FileUtils;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 public class TweetService extends IntentService {
 
     private static final String TAG="TweetService";
     private DataBaseHelper dataBaseHelper;
-    private final static String WECHAT_RESULT="com.thoughtworks.wechat.service.WECHAT";
+    public static final String ACTION = "com.thoughtworks.wechat.service.WECHAT";
+    public static final String START = "start";
+    public static final String COMPLETE = "complete";
+    public static final String EXTRA_STATUS = "status";
+
+    private String action;
+
 
     /**
      * Creates an IntentService.  Invoked by your subclass's constructor.
@@ -36,42 +40,17 @@ public class TweetService extends IntentService {
     }
 
     @Override
-    public IBinder onBind(Intent intent) {
-        // TODO: Return the communication channel to the service.
-        throw new UnsupportedOperationException("Not yet implemented");
-    }
-
-    @Override
     protected void onHandleIntent(Intent intent) {
+        action = intent.getAction();
+        if(action.equals(ACTION)) {
+            sendStatusBroadcast(START);
+            initData();
+            sendStatusBroadcast(COMPLETE);
+        }
 
-    }
-
-    @Override
-    public void onCreate(){
-        Log.i(TAG, "=======onCreate=======");
-        Intent intent = new Intent();
-        intent.setAction(WECHAT_RESULT);
-        sendBroadcast(intent);
-        super.onCreate();
-    }
-
-    @Override
-    public int onStartCommand(Intent intent, int flags, int startId){
-        Log.i(TAG, "==========onStartCommand==========");
-        initData();
-        return super.onStartCommand(intent, flags, startId);
-    }
-
-    @Override
-    public void onDestroy(){
-        Log.i(TAG, "========onDestroy=======");
-        super.onDestroy();
     }
 
     private void initData() {
-        Log.i(TAG, "============start storage db=============");
-
-        List<Tweet> tweetList = new ArrayList<>();
         dataBaseHelper = new DataBaseHelper(TweetService.this);
         SQLiteDatabase database = dataBaseHelper.getWritableDatabase();
         try {
@@ -79,26 +58,32 @@ public class TweetService extends IntentService {
             String headerSource = FileUtils.readAssetTextFile(TweetService.this, "user.json");
             String tweetSource = FileUtils.readAssetTextFile(TweetService.this, "tweets.json");
             User user = new Gson().fromJson(headerSource, User.class);
-            System.out.println(user);
-            tweetList = new Gson().fromJson(tweetSource, new TypeToken<List<Tweet>>() {
+            List<Tweet> tweetList = new Gson().fromJson(tweetSource, new TypeToken<List<Tweet>>() {
             }.getType());
             System.out.println(tweetList);
-
             for (Tweet tweet : tweetList) {
                 boolean noError = tweet.getError() == null && tweet.getUnknownError() == null;
                 boolean shouldDisplay = tweet.getContent() != null && tweet.getImages() != null;
                 if (noError && shouldDisplay) {
+                    System.out.println("======insert tweet=========");
                     ContentValues contentValues = DatabaseUtils.getWeChatTweetContentValues(tweet);
                     database.insert(DataBaseContract.TweetEntry.TABLE_NAME, null, contentValues);
                 }
             }
 
             if (null != user){
+                System.out.println("============insert user==========");
                 ContentValues contentUser = DatabaseUtils.getWeChatUserContentValues(user);
                 database.insert(DataBaseContract.UserEntry.TABLE_NAME, null, contentUser);
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private void sendStatusBroadcast(String status) {
+       Intent intent = new Intent(action);
+        intent.putExtra(EXTRA_STATUS, status);
+        LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(intent);
     }
 }

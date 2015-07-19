@@ -22,14 +22,16 @@ public class HeaderAdapter extends CursorAdapter {
 
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
+        System.out.println("==================");
         View convertView = LayoutInflater.from(context).inflate(R.layout.tweet_header, parent, false);
         TweetHeaderHolder holder = new TweetHeaderHolder(context, convertView);
         convertView.setTag(holder);
-        return convertView;    }
+        return convertView;
+    }
 
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
         TweetHeaderHolder holder = (TweetHeaderHolder) view.getTag();
-        holder.populate(DatabaseUtils.cursorUser(cursor));
+        holder.populate(DatabaseUtils.cursor2User(cursor));
     }
 }

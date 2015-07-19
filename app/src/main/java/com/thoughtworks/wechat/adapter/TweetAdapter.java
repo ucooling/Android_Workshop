@@ -20,7 +20,6 @@ public class TweetAdapter extends CursorAdapter {
 
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
-        System.out.println("=========TweetAdapter=======");
         View convertView = LayoutInflater.from(context).inflate(R.layout.tweet_item_view, parent, false);
         TweetItemViewHolder holder = new TweetItemViewHolder(context, convertView);
         convertView.setTag(holder);

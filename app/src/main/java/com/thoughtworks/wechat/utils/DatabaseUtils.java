@@ -53,7 +53,7 @@ public class DatabaseUtils {
         return tweet;
     }
 
-    public static User cursorUser(Cursor cursor){
+    public static User cursor2User(Cursor cursor){
         User user = new User();
         user.setUsername(cursor.getString(cursor.getColumnIndex(DataBaseContract.UserEntry.COLUMN_USER_NAME)));
         user.setNick(cursor.getString(cursor.getColumnIndex(DataBaseContract.UserEntry.COLUMN_NICK)));

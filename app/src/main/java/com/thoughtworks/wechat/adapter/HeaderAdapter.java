@@ -9,26 +9,29 @@ import android.widget.CursorAdapter;
 
 import com.thoughtworks.wechat.R;
 import com.thoughtworks.wechat.utils.DatabaseUtils;
-import com.thoughtworks.wechat.viewholder.TweetItemViewHolder;
+import com.thoughtworks.wechat.viewholder.TweetHeaderHolder;
 
-public class TweetAdapter extends CursorAdapter {
+/**
+ * Created by lbma on 7/18/15.
+ */
+public class HeaderAdapter extends CursorAdapter {
 
-
-    public TweetAdapter(Context context, Cursor c, boolean autoRequery) {
+    public HeaderAdapter(Context context, Cursor c, boolean autoRequery) {
         super(context, c, autoRequery);
     }
 
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
-        View convertView = LayoutInflater.from(context).inflate(R.layout.tweet_item_view, parent, false);
-        TweetItemViewHolder holder = new TweetItemViewHolder(context, convertView);
+        System.out.println("==================");
+        View convertView = LayoutInflater.from(context).inflate(R.layout.tweet_header, parent, false);
+        TweetHeaderHolder holder = new TweetHeaderHolder(context, convertView);
         convertView.setTag(holder);
         return convertView;
     }
 
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
-        TweetItemViewHolder holder = (TweetItemViewHolder) view.getTag();
-        holder.populate(DatabaseUtils.cursor2Tweet(cursor));
+        TweetHeaderHolder holder = (TweetHeaderHolder) view.getTag();
+        holder.populate(DatabaseUtils.cursor2User(cursor));
     }
 }

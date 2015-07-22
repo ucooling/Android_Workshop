@@ -32,6 +32,7 @@ public class SecondActivity extends AppCompatActivity {
 
     @InjectView(R.id.listview)
     ListView mTweetListView;
+
     private TweetAdapter mTweetAdapter;
     private View mHeaderView;
     private DataBaseHelper dataBaseHelper;

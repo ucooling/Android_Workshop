@@ -1,15 +1,11 @@
 package com.thoughtworks.wechat.viewholder;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.drawable.GlideDrawable;
-import com.bumptech.glide.request.RequestListener;
-import com.bumptech.glide.request.target.Target;
 import com.thoughtworks.wechat.R;
 import com.thoughtworks.wechat.model.User;
 

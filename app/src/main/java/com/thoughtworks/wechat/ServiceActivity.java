@@ -6,21 +6,26 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ListView;
 
 import com.thoughtworks.wechat.adapter.TweetAdapter;
+import com.thoughtworks.wechat.broadcast.DataCallBack;
 import com.thoughtworks.wechat.broadcast.DataLoaderBroadcastReceiver;
 import com.thoughtworks.wechat.database.DataBaseContract;
 import com.thoughtworks.wechat.database.DataBaseHelper;
+import com.thoughtworks.wechat.model.User;
 import com.thoughtworks.wechat.service.TweetService;
+import com.thoughtworks.wechat.utils.DatabaseUtils;
+import com.thoughtworks.wechat.viewholder.TweetHeaderHolder;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
 
-public class ServiceActivity extends AppCompatActivity {
+public class ServiceActivity extends AppCompatActivity implements DataCallBack {
 
     @InjectView(R.id.listview)
     ListView mTweetListView;
@@ -28,7 +33,7 @@ public class ServiceActivity extends AppCompatActivity {
     private TweetAdapter mTweetAdapter;
     private Intent srviceIntent = null;
     private DataBaseHelper dataBaseHelper;
-    DataLoaderBroadcastReceiver mDataLoaderReceiver = new DataLoaderBroadcastReceiver();
+    DataLoaderBroadcastReceiver mDataLoaderReceiver = new DataLoaderBroadcastReceiver(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,7 +78,24 @@ public class ServiceActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        unregisterReceiver(mDataLoaderReceiver);
         stopService(srviceIntent);
+    }
+
+    @Override
+    public void onDataLoaderStart() {
+
+    }
+
+    @Override
+    public void onDataLoaderComplete(Cursor userCursor, Cursor tweetCursor) {
+        if (userCursor != null && userCursor.moveToFirst()) {
+            User user = DatabaseUtils.cursor2User(userCursor);
+            TweetHeaderHolder holder = new TweetHeaderHolder(this, mHeaderView);
+            holder.populate(user);
+            userCursor.close();
+        }else{
+            Log.i("User load error", "========User load error========");
+        }
+        mTweetAdapter.changeCursor(tweetCursor);
     }
 }

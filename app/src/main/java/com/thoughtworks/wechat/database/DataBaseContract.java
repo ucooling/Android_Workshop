@@ -21,7 +21,7 @@ public class DataBaseContract {
     }
 
     public interface UserEntry extends BaseColumns {
-        String TABLE_NAME = "User";
+        String TABLE_NAME = "user";
         String COLUMN_USER_NAME = "username";
         String COLUMN_NICK = "nick";
         String COLUMN_AVATAR = "avatar";

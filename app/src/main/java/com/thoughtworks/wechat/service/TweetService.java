@@ -33,10 +33,9 @@ public class TweetService extends IntentService {
     /**
      * Creates an IntentService.  Invoked by your subclass's constructor.
      *
-     * @param name Used to name the worker thread, important only for debugging.
      */
-    public TweetService(String name) {
-        super(name);
+    public TweetService() {
+        super(TAG);
     }
 
     @Override
@@ -65,14 +64,12 @@ public class TweetService extends IntentService {
                 boolean noError = tweet.getError() == null && tweet.getUnknownError() == null;
                 boolean shouldDisplay = tweet.getContent() != null && tweet.getImages() != null;
                 if (noError && shouldDisplay) {
-                    System.out.println("======insert tweet=========");
                     ContentValues contentValues = DatabaseUtils.getWeChatTweetContentValues(tweet);
                     database.insert(DataBaseContract.TweetEntry.TABLE_NAME, null, contentValues);
                 }
             }
 
             if (null != user){
-                System.out.println("============insert user==========");
                 ContentValues contentUser = DatabaseUtils.getWeChatUserContentValues(user);
                 database.insert(DataBaseContract.UserEntry.TABLE_NAME, null, contentUser);
             }
